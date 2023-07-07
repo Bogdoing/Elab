@@ -31,16 +31,16 @@
             <v-list-item prepend-icon="mdi-home" title="Account" value="account"></v-list-item>
           </router-link>
 
-          <router-link style="text-decoration: none; color: inherit;" to="/">
-            <v-list-item prepend-icon="mdi-home" title="Home" value="home"></v-list-item>
-          </router-link>
-
           <router-link style="text-decoration: none; color: inherit;" to="/about">
             <v-list-item prepend-icon="mdi-account" title="Translation" value="about"></v-list-item>
           </router-link>
 
           <router-link style="text-decoration: none; color: inherit;" to="/course">
             <v-list-item prepend-icon="mdi-clock" title="Course" value="course"></v-list-item>
+          </router-link>
+
+          <router-link style="text-decoration: none; color: inherit;" to="/">
+            <v-list-item prepend-icon="mdi-home" title="Home" value="home"></v-list-item>
           </router-link>
 
           <!-- <router-link style="text-decoration: none; color: inherit;" to="/">

@@ -5,7 +5,7 @@
         <v-text-field
         v-model="to_adress"
         :rules="rules"
-        label="To adress"
+        label="Adress"
         id="v-text-field"
         ></v-text-field>
       </div>
@@ -44,41 +44,45 @@ import { useCounterStore } from '../../store/app.js'
 const store = useCounterStore()
 
 export default{
-  data(){
+data(){
     return {
-      to_adress: store.getAdress,
-      api : store.getApi,
-      balanse: '',
+      	to_adress: store.getAdress,
+     	api : store.getApi,
+     	balanse: '',
     }
   },
-  activated(){
-    selectAdress();
-    console.log('Getting balanse - ' + this.to_adress);
-  },
-  methods:{
+activated(){
+	selectAdress();
+	console.log('Getting balanse - ' + this.to_adress);
+},
+methods:{
     selectAdress(){
     },
-    getBalanse(){
-      console.log('Getting balanse - ' + this.to_adress);
-      axios.get(this.api + '/getBalanseAdress', {
-        params: {
-          account: this.to_adress
-        },
-        data: {
-          account: this.to_adress
-        }
-      })
-      .then((response) => {
-        console.log('response - ' + response.data);
-        this.balanse = response.data;
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-    },
+
+	getBalanse(){
+		console.log('Getting balanse - ' + this.to_adress);
+		axios.get(this.api + '/getBalanseAdress', {
+			params: {
+				adress: this.to_adress
+			},
+			data: {
+				adress: this.to_adress
+			}
+		})
+		.then((response) => {
+			console.log('response - ' + response.data);
+			this.balanse = (response.data / 1000000000000000000).toFixed(2);
+		})
+		.catch(function (error) {
+			console.log(error);
+		});
+	},
+//
+
+
     getMainBalanse(){
-      this.to_adress = store.getAdress;
-      this.getBalanse();
+      	this.to_adress = store.getAdress;
+      	this.getBalanse();
     },
 
   }
