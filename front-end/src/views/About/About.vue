@@ -19,8 +19,7 @@
         </v-window-item>
 
         <v-window-item :value="3" id="v-window-item">
-
-          <TabHistory :messages="messagesTest"/>
+          <TabHistory/>
         </v-window-item>
 
       </v-window>
@@ -29,10 +28,7 @@
     <!-- <div class="d-flex justify-center mb-5 mt-5">
       <v-btn variant="outlined" @click="getHistoryUser"> Chek  </v-btn>
     </div> -->
-    
-    <div id="fix-adress">    
-      <v-chip>you adress -  {{ store_app }} </v-chip>
-    </div>
+
   
 </template>
   
@@ -69,8 +65,8 @@ export default{
     TabHistory,
   },
   beforeMount(){
-    this.getHistoryUser();
-    this.setColorMessage();
+    //this.getHistoryUser();
+    //this.setColorMessage();
   },
   activated(){
     selectAdress();
@@ -89,46 +85,46 @@ export default{
     getBalanse(){
     },
     getHistoryUser(){
-      console.log(this.api + '/getTestSol');
-      axios.get(this.api + '/getTestSol', {
-        params: {
-          account: store.getAdress
-        },
-        data: {
-          account: store.getAdress
-        }
-      })
-      .then((response) => {
-        console.log('response.data - ')
-        console.log(response.data)
+      // console.log(this.api + '/getTestSol');
+      // axios.get(this.api + '/getTestSol', {
+      //   params: {
+      //     account: store.getAdress
+      //   },
+      //   data: {
+      //     account: store.getAdress
+      //   }
+      // })
+      // .then((response) => {
+      //   console.log('response.data - ')
+      //   console.log(response.data)
 
-        if (response.data == null || response.data.length == 0) {
-          console.log('response.data - null')
-        }
-        else {
-          console.log('response.data - not null')
-          this.messagesTest = response.data
-          this.setColorMessage();
-        }
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
+      //   if (response.data == null || response.data.length == 0) {
+      //     console.log('response.data - null')
+      //   }
+      //   else {
+      //     console.log('response.data - not null')
+      //     this.messagesTest = response.data
+      //     this.setColorMessage();
+      //   }
+      // })
+      // .catch(function (error) {
+      //   console.log(error);
+      // });
     },
     setColorMessage(){
-      console.log('this.messagesTest.length - ' + this.messagesTest.length)
-      for (let i = 0; i < this.messagesTest.length; i++) {
-          if (this.messagesTest[i].you_adress === this.store_app) {
-              this.messagesTest[i].color = 'green'
-              console.log(this.messagesTest[i].color + ' | ' + i)
-          }
-          else {
-              this.messagesTest[i].color = 'deep-purple-lighten-1'
-              console.log(this.messagesTest[i].color + ' | ' + i)
-          }
-      }
-      console.log('this.messagesTest - ')
-      console.log(this.messagesTest)
+      // console.log('this.messagesTest.length - ' + this.messagesTest.length)
+      // for (let i = 0; i < this.messagesTest.length; i++) {
+      //     if (this.messagesTest[i].you_adress === this.store_app) {
+      //         this.messagesTest[i].color = 'green'
+      //         console.log(this.messagesTest[i].color + ' | ' + i)
+      //     }
+      //     else {
+      //         this.messagesTest[i].color = 'deep-purple-lighten-1'
+      //         console.log(this.messagesTest[i].color + ' | ' + i)
+      //     }
+      // }
+      // console.log('this.messagesTest - ')
+      // console.log(this.messagesTest)
     }
   }
 };

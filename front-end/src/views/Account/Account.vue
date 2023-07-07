@@ -35,7 +35,7 @@
             </v-col>
             <v-col align-self="center">
                 <v-sheet id="sheet-icon-user" class="pa-2 ma-2" height="100%"> 
-                    <img id="img-user" origin="overlap" style="transform: scale(1.0)" src="https://randomuser.me/api/portraits/men/85.jpg" alt="Icons">
+                    <img id="img-user" origin="overlap" style="transform: scale(1.0)" src="../../assets/user512.png" alt="Icons">
                 </v-sheet>
                 
             </v-col>

@@ -130,7 +130,8 @@ module.exports = {
   },
 
   createUser: function(){
-    return this.web3.eth.accounts.create();    
+    return this.web3.eth.accounts.create();
+    
   }
 
 }

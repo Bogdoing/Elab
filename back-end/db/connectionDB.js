@@ -136,7 +136,7 @@ module.exports = {
     // let adress = '0x85289b9ee778051188efc2a39ac900612d100a26'
 
     connection.query(
-      `UPDATE Users SET
+      `UPDATE Users SET 
         Balanse_servis = Balanse_servis + ?
       where Adres_user = ?`,
     [amount_acc, adress],
@@ -172,8 +172,8 @@ module.exports = {
       sql: `
       create table Users(
         Id INT PRIMARY KEY AUTO_INCREMENT ,
-          Adres_user VARCHAR(42),
-          Adres_servis VARCHAR(42),
+          Adres_user VARCHAR(42) UNIQUE,
+          Adres_servis VARCHAR(42) UNIQUE,
        
           Pass VARCHAR(256),
           

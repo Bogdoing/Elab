@@ -8,8 +8,9 @@
         permanent
         @click="rail = false"
       >
+      <!--https://randomuser.me/api/portraits/men/85.jpg-->
         <v-list-item
-          prepend-avatar="https://randomuser.me/api/portraits/men/85.jpg"
+          prepend-avatar="../src/assets/user512.png"
           title="John Leider"
           nav
         >
@@ -42,10 +43,9 @@
             <v-list-item prepend-icon="mdi-clock" title="Course" value="course"></v-list-item>
           </router-link>
 
-
-          <router-link style="text-decoration: none; color: inherit;" to="/">
+          <!-- <router-link style="text-decoration: none; color: inherit;" to="/">
             <v-list-item prepend-icon="" title="" value="">{{ width }}</v-list-item>
-          </router-link>
+          </router-link> -->
         </v-list>
       </v-navigation-drawer>
       <v-main style="height: 100%">
@@ -54,14 +54,22 @@
     </v-layout>
   </v-card>
 
-  
+  <div id="fix-adress">    
+      <v-chip>you adress -  {{ store_app }} </v-chip>
+  </div>
+
 </template>
 
 <script>
+import { useCounterStore } from './store/app.js'
+//const store = useCounterStore()
+
   export default{
     data(){
       return {
         width: 0,
+
+        store_app : 'store.getAdress',
 
         drawer: true,
         rail: true,
@@ -91,5 +99,9 @@
 </script>
 
 <style>
-
+  #fix-adress{
+    position: fixed;
+    bottom: 0;
+    right: 0;
+  }
 </style>
