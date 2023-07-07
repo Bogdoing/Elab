@@ -84,7 +84,7 @@ export default {
 		setColorMessage(){
 		console.log('this.messagesTest.length - ' + this.messagesTest.length)
 		for (let i = 0; i < this.messagesTest.length; i++) {
-			if (this.messagesTest[i].you_adress === this.store_app) {
+			if (this.messagesTest[i].you_adress === this.adress_you) {
 				this.messagesTest[i].color = 'green'
 				console.log(this.messagesTest[i].color + ' | ' + i)
 			}

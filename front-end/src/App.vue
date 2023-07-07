@@ -54,22 +54,16 @@
     </v-layout>
   </v-card>
 
-  <div id="fix-adress">    
-      <v-chip>you adress -  {{ store_app }} </v-chip>
-  </div>
-
 </template>
 
 <script>
-import { useCounterStore } from './store/app.js'
-//const store = useCounterStore()
+
 
   export default{
     data(){
       return {
         width: 0,
 
-        store_app : 'store.getAdress',
 
         drawer: true,
         rail: true,
