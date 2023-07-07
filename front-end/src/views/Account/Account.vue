@@ -134,7 +134,7 @@
         <v-btn v-if="model_switch.toString() == 'SING IN'" variant="outlined" @click="getAccount"> SING IN </v-btn>
         <v-btn v-else variant="outlined" @click="getAccount"> LOG IN </v-btn>
     </div>
-    <div class="pa-2">
+    <div class="pa-2" :id="`${alertAccount}`">
         <v-alert
             v-model="alert_account"
             border="start"
@@ -178,8 +178,11 @@ export default{
         alert_account: false,
         model_switch: 'LOG IN',
 
+        alertAccount: 'alertAccount',
+
         pruseETHusd: '',
         pruseETHrub: '',
+
       }
     },
     created() {
@@ -235,6 +238,10 @@ export default{
         },
         sendAlert(){
             this.alert = true;
+        },
+        sendAlertAccount(){
+            this.alertAccount = 'alertAccount'
+            this.alert_account = true;
         },
         getBalanse(){
         console.log('Getting balanse - ' + this.adress);
@@ -300,8 +307,8 @@ export default{
             localStorage.clear();
             window.location.reload();
         },
-
-        logIN(){
+        
+        logIN() {
             if(this.adress == null){
                 this.getLocalStorage();
             }
@@ -336,12 +343,17 @@ export default{
                 this.saveLocalStorage();
 
             })
-            .catch(function (error) {
-                console.log(error);
-                //alert('Неверный логин или пароль.')
+            .catch(async (error) => {
+                console.log('error - ' + error);
+                this.sendAlertAccount();
+                await this.sleep(500) 
+                this.alertAccount = ''
             });
             
         },
+        sleep(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
     }
 }
 
@@ -384,5 +396,18 @@ export default{
     #logheader span{
         display: block;
 
+    }
+
+    #alertAccount{
+        animation: 0.1s linear 0s infinite alternate rise
+    }
+
+    @keyframes rise {
+        from {
+            transform: translateY(10px);
+        }
+        to {
+            transform: translateY(0);
+        }
     }
 </style>

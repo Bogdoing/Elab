@@ -136,11 +136,10 @@ module.exports = {
     // let adress = '0x85289b9ee778051188efc2a39ac900612d100a26'
 
     connection.query(
-      `UPDATE Users SET 
-        Balanse_user = ?, 
+      `UPDATE Users SET
         Balanse_servis = Balanse_servis + ?
       where Adres_user = ?`,
-    [amount_user, amount_acc, adress],
+    [amount_acc, adress],
     function (error, results, fields) {
       if (error) throw error;
       else console.log('UpdateUserBalanse OK');
