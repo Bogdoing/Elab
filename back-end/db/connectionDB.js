@@ -99,14 +99,17 @@ module.exports = {
     //connection.end();
   },
 
-  getUserAccount: async function(adress, callback){
+  getUserAccount: async function(adress, password, callback){
     //connection.connect();
     await connection.query({
-        sql: `select Adres_user, Adres_servis, Balanse_user, Balanse_servis from Users
-          where Adres_user=?`,
+        // sql: `select Adres_user, Adres_servis, Balanse_user, Balanse_servis from Users
+        //   where Adres_user=?`,
+        sql: `select Adres_user, Adres_servis, Pass, Balanse_servis from Users
+          where Adres_user = ? 
+            and Pass = ?`,
         timeout: 40000, // 40s
       },
-      [adress],
+      [adress, password],
       function (error, results, fields) {
         if (error) console.log(error);
         else{
@@ -151,6 +154,64 @@ module.exports = {
           
         res.send("MySQL Server is Active");
     })
+  },
+
+  dropDB: async function(){
+    await connection.query({
+      sql: `DROP TABLE Users`,
+      timeout: 40000, // 40s
+    },    
+    function (error, results, fields) {
+      if (error) console.log(error);
+      else console.log('Drop is OK');       
+    }
+    );
+  },
+
+  createDBUsers: async function(){
+    await connection.query({
+      sql: `
+      create table Users(
+        Id INT PRIMARY KEY AUTO_INCREMENT ,
+          Adres_user VARCHAR(42),
+          Adres_servis VARCHAR(42),
+       
+          Pass VARCHAR(256),
+          
+          Balanse_user DOUBLE,
+          Balanse_servis DOUBLE
+          
+      )`,
+      timeout: 40000, // 40s
+    },    
+    function (error, results, fields) {
+      if (error) console.log(error);
+      else console.log('Create is OK');       
+    }
+    );
+  },
+
+  addUserDB: async function(adres_user, adres_servis, pass){
+    await connection.query({
+      sql: `
+      insert Users (Adres_user, Adres_servis, Pass, Balanse_servis)
+      value
+      (
+        ?,
+        ?,
+        ?,
+        0
+      )`,
+      timeout: 40000, // 40s
+
+
+    },    
+    [adres_user, adres_servis, pass],
+    function (error, results, fields) {
+      if (error) console.log(error);
+      else console.log('Add user is OK');       
+    }
+    );
   },
 }
 

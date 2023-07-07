@@ -55,7 +55,7 @@ h3 {
 
 }
 
-button#send{
+button#send, #sendBalanse, #sendCoin, #test, #redb{
   display: block;
     margin: 0 auto;
 

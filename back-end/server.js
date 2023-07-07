@@ -134,15 +134,45 @@ app.get("/getMysqlStatus", (req, res) => {
   truffle_db.testConn(res);
   
 });
+
 app.get('/getUserAccount', (req, res) => {
   console.log("**** GET /getUserAccount ****");
   console.log('req.body - ' + req.query.adress);
   console.log('Object req - ' + Object.keys(req.query));
-  db.getUserAccount(req.query.adress, function (account) { //'0x58159043703749e032687f7e51c5a218ffaba410'
+  db.getUserAccount(req.query.adress, req.query.password , function (account) { //'0x58159043703749e032687f7e51c5a218ffaba410'
     res.send(account);
   });
   console.log("getUserAccount OK");
 })
+
+app.post('/postAddUser', (req, res) => {
+  console.log("**** GET /postAddUser ****");
+//   {
+//   address: '0x6aF412aD3674ac42d422A76931c989Dea2c68da0',
+//   privateKey: '0xb3739d5231655c8c20bf80c790f95262d99500c1f9d198ec1a2557b821e22a6b',
+//   signTransaction: [Function: signTransaction],
+//   sign: [Function: sign],
+//   encrypt: [Function: encrypt]
+// }
+// [ 'address', 'privateKey', 'signTransaction', 'sign', 'encrypt' ]  
+  let user = truffle_connect.createUser();
+  console.log(user);
+
+  let adres_user = req.body.adres_user; // user
+  let adres_servis = user.address; // web3
+  let pass = req.body.pass; // user
+
+  db.addUserDB(adres_user, adres_servis, pass);
+  console.log("postAddUser OK");
+})
+
+app.get('/getReDB', (req, res) => {
+  console.log("**** GET /getReDB ****");
+
+  db.dropDB();
+
+  db.createDBUsers();
+});
 /* /DB/ */
 //
 

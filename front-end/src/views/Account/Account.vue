@@ -43,7 +43,13 @@
         
         <v-row no-gutters id="row-one" >
             <v-col>
-                <v-sheet class="bg-deep-purple accent-4 pa-2 ma-4 rounded-lg " height="100%">                     
+                <v-sheet class="bg-deep-purple accent-4 pa-2 ma-4 rounded-lg " height="100%">       
+                    <div class="d-flex justify-center mb-5 mt-5">
+                        <v-btn variant="outlined" @click="logIN"> TEST </v-btn>
+                    </div>              
+                    <div class="d-flex justify-center mb-5 mt-5">
+                        <v-btn variant="outlined" @click="clearLocalStorage"> Exit </v-btn>
+                    </div>  
                     <div class="d-flex justify-center mb-5 mt-5">
                         <v-btn variant="outlined" @click="getPriceETC"> Update price ETC </v-btn>
                     </div>
@@ -95,7 +101,21 @@
     </v-container>
 </div>
 <div v-else> 
-    <p class="text-h1 pa-5"> LOG IN </p>
+    <div id="logheader">
+        <p v-if="model_switch.toString() == 'SING IN'" class="text-h1 pa-5"> SING IN </p>
+        <p v-else class="text-h1 pa-5"> LOG IN </p>
+        <span>
+            <v-switch
+                color="indigo-darken-3"
+                v-model="model_switch"
+                hide-details
+                inset
+                true-value='SING IN'
+                false-value="LOG IN"
+                :label="`Switch: ${model_switch.toString()}`"
+            ></v-switch>
+        </span>   
+    </div>
     <v-col >
         <v-text-field
             v-model="adress"
@@ -103,8 +123,27 @@
             variant="outlined"          
         ></v-text-field>
     </v-col>
+    <v-col >
+        <v-text-field
+            v-model="password"
+            label="Password"
+            variant="outlined"          
+        ></v-text-field>
+    </v-col>
     <div class="d-flex justify-center mb-5 mt-5">
-        <v-btn variant="outlined" @click="getAccount"> LOG IN </v-btn>
+        <v-btn v-if="model_switch.toString() == 'SING IN'" variant="outlined" @click="getAccount"> SING IN </v-btn>
+        <v-btn v-else variant="outlined" @click="getAccount"> LOG IN </v-btn>
+    </div>
+    <div class="pa-2">
+        <v-alert
+            v-model="alert_account"
+            border="start"
+            variant="tonal"
+            closable
+            close-label="Close Alert"
+            color="deep-purple-accent-4"
+            text="Введите адрес и пароль"                             
+        ></v-alert>
     </div>
 </div>
 </template>
@@ -131,9 +170,13 @@ export default{
         adress: store.getAdress,
         adress_service: '',
 
+        password: '',
+
         drawer: true,
         rail: true,
         alert: false,
+        alert_account: false,
+        model_switch: 'LOG IN',
 
         pruseETHusd: '',
         pruseETHrub: '',
@@ -145,8 +188,18 @@ export default{
             this.getPriceETC();
             this.getAccount();
         }
+        else {}
     },
-
+    mounted() {
+        this.getLocalStorage();
+        if (this.reg == true) {
+            this.getBalanse();
+            this.getPriceETC();
+            this.getAccount();
+        }
+        else {}
+        this.logIN();
+    },
     methods: {
         updateStore(){
             store.adress = this.adress;
@@ -203,39 +256,90 @@ export default{
         },
 
         getAccount (){
-            console.log('Getting account -'+ this.adress);
-            axios.get(this.api + '/getUserAccount', {
-            params: {
-                adress: this.adress
-            },
-            data: {
-                adress: this.adress
+            if (this.reg == true) {
+                this.getLocalStorage();
             }
-        })
-        .then((response) => {
-            console.log('Object response - ' + Object.keys(response.data[0]));
-            console.log('response - ' + response.data[0].Adres_servis);
-            this.adress_account = response.data[0].Adres_servis;
-            this.balanse_account = response.data[0].Balanse_servis;
-            store.balanse_adress = this.balanse_account
-            store.activ_adress = true;
-            this.reg = store.activ_adress;
-            this.adress = response.data[0].Adres_user;
-            store.adress = response.data[0].Adres_user;
-
-            store.to_adress = response.data[0].Adres_servis
+            else {
+                if (this.model_switch == 'LOG IN') {
+                    console.log('Getting account -'+ this.adress);
+                    this.logIN();
+                }
+                else {
+                    axios.post(this.api + '/postAddUser', {
+                        adres_user: this.adress,
+                        pass: this.password
+                    })
+                    .then(function (response) {
+                        console.log('User created: ' + response);
+                        this.saveLocalStorage();
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+                    
+                }
+            }
             
-            this.updateStore();
-
-            this.getBalanse();
-            this.getPriceETC();
-
-        })
-        .catch(function (error) {
-            console.log(error);
-        });
+            
         },
         replenishBalanse(){
+            
+        },
+
+        saveLocalStorage(){
+            localStorage.adress = this.adress;
+            localStorage.password = this.password;
+            localStorage.reg = this.reg;
+        },
+        getLocalStorage(){
+            this.adress = localStorage.adress;
+            this.password = localStorage.password;
+            this.reg = localStorage.reg;
+        },
+        clearLocalStorage(){
+            localStorage.clear();
+            window.location.reload();
+        },
+
+        logIN(){
+            if(this.adress == null){
+                this.getLocalStorage();
+            }
+            axios.get(this.api + '/getUserAccount', {
+            params: {
+                adress: this.adress,
+                password: this.password
+            },
+            data: {
+                adress: this.adress,
+                password: this.password
+            }
+            })
+            .then((response) => {
+                //console.log('Object response - ' + Object.keys(response.data[0]));
+                //console.log('response - ' + response.data[0].Adres_servis);
+                this.adress_account = response.data[0].Adres_servis;
+                this.balanse_account = response.data[0].Balanse_servis;
+                store.balanse_adress = this.balanse_account
+                store.activ_adress = true;
+                this.reg = store.activ_adress;
+                this.adress = response.data[0].Adres_user;
+                store.adress = response.data[0].Adres_user;
+
+                store.to_adress = response.data[0].Adres_servis
+                
+                this.updateStore();
+
+                this.getBalanse();
+                this.getPriceETC();
+
+                this.saveLocalStorage();
+
+            })
+            .catch(function (error) {
+                console.log(error);
+                //alert('Неверный логин или пароль.')
+            });
             
         },
     }
@@ -271,5 +375,14 @@ export default{
     }
     #sheet-icon-user{
         text-align: center;
+    }
+
+    #logheader{
+        display: flex;
+        justify-content: space-between;
+    }
+    #logheader span{
+        display: block;
+
     }
 </style>

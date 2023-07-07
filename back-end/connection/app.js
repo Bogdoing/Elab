@@ -127,6 +127,10 @@ module.exports = {
         callback(result)
       }
     })
+  },
+
+  createUser: function(){
+    return this.web3.eth.accounts.create();    
   }
 
 }

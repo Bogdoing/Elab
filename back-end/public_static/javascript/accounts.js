@@ -77,5 +77,12 @@ $(document).ready(function () {
     })
   });
   
+  $('#redb').click(function () {    
+    $('#status').text("drop...");
+    $.get('/getReDB', function (response) {
+      $('#status').text("DB is dropped!!");
+    })
+    $('#status').text("Create DB");
+  });
 
 })
