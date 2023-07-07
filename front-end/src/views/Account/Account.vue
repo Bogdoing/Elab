@@ -282,8 +282,7 @@ export default{
                     })
                     .catch(function (error) {
                         console.log(error);
-                    });
-                    
+                    });                    
                 }
             }
             
@@ -323,8 +322,8 @@ export default{
             }
             })
             .then((response) => {
-                //console.log('Object response - ' + Object.keys(response.data[0]));
-                //console.log('response - ' + response.data[0].Adres_servis);
+                console.log('Object response - ' + Object.keys(response.data[0]));
+                console.log('response - ' + response.data[0].Adres_servis);
                 this.adress_account = response.data[0].Adres_servis;
                 this.balanse_account = response.data[0].Balanse_servis;
                 store.balanse_adress = this.balanse_account

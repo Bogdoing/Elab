@@ -103,6 +103,8 @@ app.post('/sendCoin', (req, res) => {
   var date = new Date();
   console.log(date);
 
+  console.log(new Date().toLocaleString("en-US", {timeZone: "Europe/Moscow"}));
+
 
   let amount = req.body.amount;
   let sender = req.body.sender;

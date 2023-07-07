@@ -1,37 +1,37 @@
 <template>
     <div class="mt-0" id="container">
 
-      <div id="v-text-field">
-        <v-text-field
-        v-model="to_adress"
-        :rules="rules"
-        label="Adress"
-        id="v-text-field"
-        ></v-text-field>
-      </div>
+		<div id="v-text-field">
+			<v-text-field
+				v-model="to_adress"
+				:rules="rules"
+				label="Adress"
+				id="v-text-field"
+			></v-text-field>
+		</div>
 
-      <v-col >
-        <v-text-field
-          v-model="balanse"
-          label="Balanse"
-          variant="outlined"
-          readonly
-        ></v-text-field>
-      </v-col>
+		<v-col >
+			<v-text-field
+				v-model="balanse"
+				label="Balanse"
+				variant="outlined"
+				readonly
+			></v-text-field>
+		</v-col>
       
       <v-divider></v-divider>
 
-      <div class="d-flex justify-center mb-5 mt-5">
-        <v-btn variant="outlined" @click="getBalanse"> Chek balanse </v-btn>
-      </div>
+		<div class="d-flex justify-center mb-5 mt-5">
+			<v-btn variant="outlined" @click="getBalanse"> Chek balanse </v-btn>
+		</div>
 
-      <v-divider></v-divider>
+		<v-divider></v-divider>
 
-      <div class="d-flex justify-center mb-5 mt-5">
-        <v-btn variant="outlined" @click="getMainBalanse"> Chek main balanse </v-btn>
-      </div>
+		<div class="d-flex justify-center mb-5 mt-5">
+			<v-btn variant="outlined" @click="getMainBalanse"> Chek main balanse </v-btn>
+		</div>
 
-      <v-divider></v-divider>
+		<v-divider></v-divider>
 
     </div>
 </template>
@@ -50,7 +50,7 @@ data(){
      	api : store.getApi,
      	balanse: '',
     }
-  },
+},
 activated(){
 	selectAdress();
 	console.log('Getting balanse - ' + this.to_adress);
@@ -77,20 +77,17 @@ methods:{
 			console.log(error);
 		});
 	},
-//
-
 
     getMainBalanse(){
       	this.to_adress = store.getAdress;
       	this.getBalanse();
     },
-
-  }
+}
 };
 </script>
 
 <style>
-  #container{
-    padding: 10px;
-  }
+#container{
+	padding: 10px;
+}
 </style>
