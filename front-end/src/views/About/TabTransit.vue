@@ -29,6 +29,17 @@
 		</div>
 
 		<div id="hei-content"></div>
+		
+		<br	>
+		<v-select class=" mr-5 ml-5 "
+			clearable
+			label="Select"
+			:items=items_select
+			variant="outlined"
+			v-model="adress_select"
+			density="comfortable"
+		></v-select>
+	
 
     </div>
 </template>
@@ -52,6 +63,11 @@ export default{
 		},
 		],
 		store_app : store.getAdress,
+		adressAcc: store.getToAdress,
+
+		items_select: [store.getAdress, store.getToAdress],
+		adress_select: store.getAdress,
+		
 		to_adress : '',
 		to_amount : '',
 		message_input : '',
@@ -71,7 +87,7 @@ export default{
 	sendToken(){
 		console.log('Sending token - ' + this.api + " | " + store.getApi);
 		axios.post(this.api + '/sendCoin', {
-			sender: this.store_app,
+			sender: this.adress_select,
 			receiver: this.to_adress,
 			amount: this.to_amount,
 			message: this.message_input,
