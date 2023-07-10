@@ -1,18 +1,6 @@
 <template>
-    
-  <!-- <p>adress    {{ user_select }} </p>
-  <p>to adress {{ items_select }} </p> -->
-
-  <v-select class=" pt-5 pr-5 pl-5 "
-    clearable
-    label="Select"
-    :items=items_select
-    variant="outlined"
-    v-model="user_select"
-  ></v-select>
 
   <History :messages="messagesTest" />
-  
  
 </template>
   
@@ -32,9 +20,6 @@ export default {
 		circle_history: '',
 
 		api: store.api,
-
-		user_select: [store.getAdress],
-		items_select: [store.getAdress, store.getToAdress],
 
 		messagesTest:[
 		{
@@ -84,7 +69,11 @@ export default {
 		setColorMessage(){
 		console.log('this.messagesTest.length - ' + this.messagesTest.length)
 		for (let i = 0; i < this.messagesTest.length; i++) {
-			if (this.messagesTest[i].you_adress === this.adress_you) {
+			if (this.messagesTest[i].message == 'replenishment of the balance') {
+				this.messagesTest[i].color = 'lime'
+				console.log(this.messagesTest[i].message + ' | ' + i)
+			}
+			else if (this.messagesTest[i].you_adress === this.adress_you) {
 				this.messagesTest[i].color = 'green'
 				console.log(this.messagesTest[i].color + ' | ' + i)
 			}

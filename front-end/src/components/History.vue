@@ -3,7 +3,14 @@
         <v-row justify="space-around">
         <v-card width="2000">
             <v-card-text>
-            <strong> Твой адрес <i> {{ adress_you }} </i> </strong> 
+            <p> 
+                <b> Aдрес </b> 
+                <i> {{ adress_you }} </i>  
+                <br> 
+                <b> Aдрес аккаунта </b>
+                <i> {{ adress_acc }} </i> 
+                <v-divider></v-divider>        
+            </p> 
             <v-timeline density="compact" align="start">
                 <v-timeline-item
                 v-for="message in messages"
@@ -14,18 +21,25 @@
                 v-model="circle_history"
                 >
                 <div class="mb-4">
-                    <div class="font-weight-normal">
 
-                        <strong v-if="message.you_adress == adress_you">Отправлено {{message.amount}}  <!--{{ message.you_adress }}--> </strong>  
-                        <strong v-else>Получено {{message.amount}} <!--{{ message.you_adress }}--></strong>    
+                    <div class="font-weight-normal">
+                        <strong v-if="message.message == 'replenishment of the balance'">Пополнение аккаунта {{message.amount}} </strong>  
+                        <strong v-else-if="message.you_adress == adress_you">Отправлено из кошелька {{message.amount}} </strong>  
+                        <strong v-else-if="message.you_adress == adress_acc">Отправлено из аккаунта {{message.amount}} {{message.you_adress}}  </strong>
+                        
+                        <strong v-else-if="message.to_adress == adress_acc">Пополнение {{message.amount}} </strong>                        
+                        <strong v-else>Получено {{message.amount}} </strong>    
+                        
                         <br />
                         @{{ message.time_transition }}
                         <br />
-                        <strong v-if="message.you_adress == adress_you"> {{ message.to_adress }}</strong>  
+                        <strong v-if="message.you_adress == adress_you"> {{ message.to_adress }}</strong>
+                        <strong v-else-if="message.you_adress == adress_acc"> {{ message.to_adress }}</strong>  
                         <strong v-else>{{ message.you_adress }}</strong>           
                         <div style="width: 300px;"> </div>      
-                    </div>
+                    </div>    
                     <div>{{ message.message }}</div>
+                
                 </div>
                 </v-timeline-item>
             </v-timeline>
@@ -47,7 +61,10 @@ export default {
     },
     data: () => ({
         width_i: window.innerWidth,
+
         adress_you: store.getAdress,
+		adress_acc: store.getToAdress,
+
         circle_history: '',
 
         messages:[

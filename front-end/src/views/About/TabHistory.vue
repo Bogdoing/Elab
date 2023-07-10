@@ -1,18 +1,6 @@
 <template>
-    
-  <!-- <p>adress    {{ user_select }} </p>
-  <p>to adress {{ items_select }} </p> -->
-
-  <v-select class=" pt-5 pr-5 pl-5 "
-    clearable
-    label="Select"
-    :items=items_select
-    variant="outlined"
-    v-model="user_select"
-  ></v-select>
 
   <History :messages="messagesTest" />
-  
  
 </template>
   
@@ -32,9 +20,6 @@ export default {
 		circle_history: '',
 
 		api: store.api,
-
-		user_select: [store.getAdress],
-		items_select: [store.getAdress, store.getToAdress],
 
 		messagesTest:[
 		{

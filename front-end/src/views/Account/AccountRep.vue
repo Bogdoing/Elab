@@ -42,8 +42,8 @@ export default {
         methods: {
             sendToken(){
                 axios.post(store.getApi + '/sendCoin', {
-                    sender: this.to_adress,
-                    receiver: this.adress,
+                    sender: this.adress,
+                    receiver: this.to_adress,
                     amount: this.to_amount,
                     message: 'replenishment of the balance',
                 })

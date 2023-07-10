@@ -71,8 +71,8 @@ export default{
 	sendToken(){
 		console.log('Sending token - ' + this.api + " | " + store.getApi);
 		axios.post(this.api + '/sendCoin', {
-			sender: this.to_adress,
-			receiver: this.store_app,
+			sender: this.store_app,
+			receiver: this.to_adress,
 			amount: this.to_amount,
 			message: this.message_input,
 		})
