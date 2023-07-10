@@ -45,7 +45,7 @@ export default {
                     sender: this.adress,
                     receiver: this.to_adress,
                     amount: this.to_amount,
-                    message: 'replenishment of the balance',
+                    message: "replenishment of the balance",
                 })
                 .then((response) => {                    
                     console.log('Sending token');

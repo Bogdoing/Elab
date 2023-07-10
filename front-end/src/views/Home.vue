@@ -17,6 +17,7 @@
 	<div class="d-flex justify-center">
 		<v-btn variant="outlined" @click="selectAdress"> Button </v-btn>
 	</div>
+	
 	<List :items="items_select"/>
 </template>
 
@@ -24,6 +25,7 @@
 import List from '@/components/List.vue';
 
 import { useCounterStore } from '../store/app.js'
+
 const store = useCounterStore()
 
 export default{
@@ -41,7 +43,6 @@ components: {
     List,
 },
 created(){
-	
 },
 activated(){
 	console.log('activated');
@@ -84,7 +85,7 @@ methods:{
 		console.log(store.activ_adress);
 		if (store.activ_adress == false) this.text_header = 'Выберите кошелёк'
 		else this.text_header = 'Ваш кошелёк - '	
-	}
+	},
 }
 };
 </script>

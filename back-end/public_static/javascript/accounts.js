@@ -85,4 +85,12 @@ $(document).ready(function () {
     $('#status').text("Create DB");
   });
 
+  $('#redbt').click(function () {    
+    $('#status').text("drop...");
+    $.get('/getReDBtransaction', function (response) {
+      $('#status').text("DB is dropped!!");
+    })
+    $('#status').text("Create DB");
+  });
+
 })

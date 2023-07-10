@@ -103,20 +103,29 @@ app.post('/sendCoin', (req, res) => {
   var date = new Date();
   console.log(date);
 
-  console.log(new Date().toLocaleString("en-US", {timeZone: "Europe/Moscow"}));
+  //console.log(new Date().toLocaleString("en-US", {timeZone: "Europe/Moscow"}));
 
 
   let amount = req.body.amount;
   let sender = req.body.sender;
   let receiver = req.body.receiver;
   let message = req.body.message;
+
+  // console.log(amount);
+  // console.log(sender);
+  // console.log(receiver);
+  // console.log(message);
+  // console.log(date);
   
-  db.setTransaction(sender, receiver, amount, message, date)
-  console.log('transactions is OK')
+  // truffle_connect.sendTransactions(amount, sender, receiver, (balance) => {
+  //   res.send(balance);
+  // });
+
+  truffle_connect.sendTransactions(amount, sender, receiver);
+
+  db.setTransaction(sender, receiver, amount, message, date);
   
-  truffle_connect.sendTransactions(amount, sender, receiver, (balance) => {
-    res.send(balance);
-  });
+  console.log('sendTransactions is OK')
 });
 
 app.post('/sendCoinUser', (req, res) => {
@@ -126,7 +135,11 @@ app.post('/sendCoinUser', (req, res) => {
   let amount_acc = req.body.amount_acc;
   let adress = req.body.adress;
 
-  db.updateUserBalanse(amount_user, amount_acc, adress);
+  // console.log("SCU amount_user - " + amount_user);
+  // console.log('SCU amount_acc - ' + amount_acc);
+  // console.log('SCU adress - ' + adress);
+
+  db.updateUserBalanse(amount_acc, adress);
 });
 //
 
@@ -174,6 +187,13 @@ app.get('/getReDB', (req, res) => {
   db.dropDB();
 
   db.createDBUsers();
+});
+app.get('/getReDBtransaction', (req, res) => {
+  console.log("**** GET /getReDBtransaction ****");
+
+  db.dropDBtransaction();
+
+  db.createDBtransaction();
 });
 /* /DB/ */
 //

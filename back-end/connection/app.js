@@ -92,26 +92,26 @@ module.exports = {
     });
   },
 
-  sendTransactions: async function (amount, toAdress, account) {
-    let self = this
+  sendTransactions: async function (amount, account, toAdress) {
     MetaCoin.setProvider(this.web3.currentProvider);
-    
     //const weiAmount = this.web3.utils.toWei(amount.toString(), 'ether');
-
-    console.log("sendTransactions");
-    console.log("account  - |" + account  + "|");
-    console.log("toAdress - |" + toAdress + "|");
-    console.log("amount - " + amount + " * amountx8 - " + amount*1000000000000000000);
-    this.web3.eth.sendTransaction({
-      from: account,
-      to: toAdress,
-      value: amount*1000000000000000000
-      //this.utils.parseEther(amount) // web3.utils.toWei("0.01", "ether")
-    });
+    //this.utils.parseEther(amount) // web3.utils.toWei("0.01", "ether")
+    console.log("!!!!!!appjs sendTransactions is OK");
+    try {
+      console.log("sendTransactions");
+      console.log("ST account  - |" + account  + "|");
+      console.log("ST toAdress - |" + toAdress + "|");
+      console.log("ST amount - " + amount + " * amountx8 - " + amount*1000000000000000000);
+      this.web3.eth.sendTransaction({
+        from: account,
+        to: toAdress,
+        value: amount*1000000000000000000
+      });
+      console.log("!!!!!!appjs sendTransactions is OK");
+    } catch (error) {
+      console.log("sendTransactions EROR - " + error.message);
+    }
   },
-  //await web3.eth.sendTransaction({to: '0x58159043703749e032687f7e51c5a218ffaba410', from: '0x18bb0d2373c02ac68038bc5dda60a79bab83e9bb', value: web3.utils.toWei('70', 'ether')});
-  //await web3.eth.getBalance('0x18bb0d2373c02ac68038bc5dda60a79bab83e9bb');
-  //await web3.eth.getBalance('0x58159043703749e032687f7e51c5a218ffaba410');
 
   getBalanceAdress: function (account, callback) {
     console.log('getBalanceAdress - ', account)

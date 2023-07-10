@@ -64,7 +64,7 @@ module.exports = {
       },
       [you_adress, you_adress],
       function (error, results, fields) {
-        if (error) console.log(error);
+        if (error) console.log(error + 'getHistoryUser');
         else{
             console.log('The solution is: Object ' + Object.keys(results));
             for (let i = 0; i < results.length; i++) {
@@ -84,6 +84,7 @@ module.exports = {
   setTransaction: async function(you_adress, to_adress, amount, message, time_transition){
     //connection.connect();
     amount = amount + ' ETC';
+    console.log(time_transition + " - TIME");
     await connection.query({
         sql: `insert transition 
             (you_adress, to_adress, amount, message, time_transition)
@@ -92,8 +93,8 @@ module.exports = {
       },
       [you_adress, to_adress, amount, message, time_transition],
       function (error, results, fields) {
-        if (error) console.log(error);
-        console.log('The query is: OK');
+        if (error) console.log(error + 'setTransaction');
+        console.log('The query setTransaction is: OK');
       }
     );
     //connection.end();
@@ -111,7 +112,7 @@ module.exports = {
       },
       [adress, password],
       function (error, results, fields) {
-        if (error) console.log(error);
+        if (error) console.log(error + "getUserAccount");
         else{
             console.log('Results ' + results);
             console.log('The solution is: Object ' + Object.keys(results));
@@ -128,12 +129,11 @@ module.exports = {
     );
   },
 
-  updateUserBalanse: async function(amount_user, amount_acc, adress){ //amount, adress
+  updateUserBalanse: async function(amount_acc, adress){ //amount, adress
     console.log('UpdateUserBalanse');
 
-    // let amount_user = 0
-    // let amount_acc = 1
-    // let adress = '0x85289b9ee778051188efc2a39ac900612d100a26'
+    console.log('amount_acc - ' + amount_acc);
+    console.log('adress - ' + adress);
 
     connection.query(
       `UPDATE Users SET 
@@ -141,8 +141,8 @@ module.exports = {
       where Adres_user = ?`,
     [amount_acc, adress],
     function (error, results, fields) {
-      if (error) throw error;
-      else console.log('UpdateUserBalanse OK');
+      if (error) console.log('throw error + updateUserBalanse');//throw error + "updateUserBalanse";
+      else console.log('connDB UpdateUserBalanse OK');
     });
   },
 
@@ -171,16 +171,46 @@ module.exports = {
     await connection.query({
       sql: `
       create table Users(
-        Id INT PRIMARY KEY AUTO_INCREMENT ,
+          Id INT PRIMARY KEY AUTO_INCREMENT ,
           Adres_user VARCHAR(42) UNIQUE,
           Adres_servis VARCHAR(42) UNIQUE,
        
           Pass VARCHAR(256),
-          
-          Balanse_user DOUBLE,
           Balanse_servis DOUBLE
           
       )`,
+      timeout: 40000, // 40s
+    },    
+    function (error, results, fields) {
+      if (error) console.log(error);
+      else console.log('Create is OK');       
+    }
+    );
+  },
+
+  dropDBtransaction: async function(){
+    await connection.query({
+      sql: `DROP TABLE transition`,
+      timeout: 40000, // 40s
+    },    
+    function (error, results, fields) {
+      if (error) console.log(error);
+      else console.log('Drop is OK');       
+    }
+    );
+  },
+
+  createDBtransaction: async function(){
+    await connection.query({
+      sql: `
+      create table transition(
+        you_adress VARCHAR(42),
+        to_adress VARCHAR(42),
+        amount VARCHAR(256),      
+        message VARCHAR(256),     
+        time_transition DATETIME      
+      )
+      `,
       timeout: 40000, // 40s
     },    
     function (error, results, fields) {
