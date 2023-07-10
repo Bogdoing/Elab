@@ -146,6 +146,23 @@ module.exports = {
     });
   },
 
+  updateUserBalanseMinus: async function(amount_acc, adress){ //amount, adress
+    console.log('updateUserBalanseMinus');
+
+    console.log('amount_acc - ' + amount_acc);
+    console.log('adress - ' + adress);
+
+    connection.query(
+      `UPDATE Users SET 
+        Balanse_servis = Balanse_servis - ?
+      where Adres_user = ?`,
+    [amount_acc, adress],
+    function (error, results, fields) {
+      if (error) console.log('throw error + updateUserBalanse');//throw error + "updateUserBalanse";
+      else console.log('connDB UpdateUserBalanse OK');
+    });
+  },
+
   testConn: async function (res) {
     console.log('testSol - OK')
     connection.ping((err) => {
@@ -171,13 +188,14 @@ module.exports = {
     await connection.query({
       sql: `
       create table Users(
-          Id INT PRIMARY KEY AUTO_INCREMENT ,
-          Adres_user VARCHAR(42) UNIQUE,
-          Adres_servis VARCHAR(42) UNIQUE,
-       
-          Pass VARCHAR(256),
-          Balanse_servis DOUBLE
-          
+        Id INT PRIMARY KEY AUTO_INCREMENT ,
+        Adres_user VARCHAR(42) UNIQUE,
+        
+        Adres_servis VARCHAR(42) UNIQUE,
+        Privat_key VARCHAR(66) UNIQUE,
+      
+        Pass VARCHAR(256),
+        Balanse_servis DOUBLE
       )`,
       timeout: 40000, // 40s
     },    
@@ -220,27 +238,49 @@ module.exports = {
     );
   },
 
-  addUserDB: async function(adres_user, adres_servis, pass){
+  addUserDB: async function(adres_user, adres_servis, privateKey, pass){
     await connection.query({
       sql: `
-      insert Users (Adres_user, Adres_servis, Pass, Balanse_servis)
+      insert Users (Adres_user, Adres_servis, Privat_key, Pass, Balanse_servis)
       value
       (
+        ?,
         ?,
         ?,
         ?,
         0
       )`,
       timeout: 40000, // 40s
-
-
     },    
-    [adres_user, adres_servis, pass],
+    [adres_user, adres_servis, privateKey, pass],
     function (error, results, fields) {
       if (error) console.log(error);
       else console.log('Add user is OK');       
     }
     );
   },
+
+  getPrivatKey: async function(adress, callback){
+    console.log('getPrivatKey');
+    await connection.query({
+        sql: `select Privat_key from Users
+	              where Adres_user = ?`,
+        //sql: `select Privat_key from users u`,
+                
+        timeout: 40000, // 40s
+      },
+      [adress],
+      function (error, results, fields) {
+        if (error) console.log(error + 'getPrivatKey');
+        else{
+            //console.log('The solution is: Object ' + Object.keys(results));
+            for (let i = 0; i < results.length; i++) {
+                console.log('The solution is: ' + results[i].Privat_key);         
+            }
+            callback(results);
+        }
+      }
+    );
+  }
 }
 

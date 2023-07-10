@@ -122,8 +122,48 @@ app.post('/sendCoin', (req, res) => {
   // });
 
   truffle_connect.sendTransactions(amount, sender, receiver);
+  // let senderAddress = "0x61B6B8BBae10B618aE01f357D33D8D6921e02476";
+  // let senderPrivateKey = "0xf08147387ca2e208d37c1956e1c2d7b191823cd9984ab7bd1c8e9456436b65ed";
+  // let recepientAddress = "0x7847abd8c85d973b3fDa41B07803C38ccCfe0e09";
+  // truffle_connect.sendTransactionsPrivate(senderAddress, senderPrivateKey, recepientAddress);
 
   db.setTransaction(sender, receiver, amount, message, date);
+  
+  console.log('sendTransactions is OK')
+});
+
+app.post('/sendCoinPrivat', async (req, res) => {
+  console.log("**** GET /sendCoinPrivat ****");
+  console.log(req.body);
+
+  var date = new Date();
+  console.log(date);
+
+  let amount = req.body.amount;
+  let sender = req.body.sender;
+  let receiver = req.body.receiver;
+  let message = req.body.message;
+
+  console.log(sender);
+  console.log(receiver);
+
+  let senderPrivateKey = ''
+  await db.getPrivatKey(receiver, function (key) { 
+    this.senderPrivateKey = key[0].Privat_key;
+    console.log('key - ' + key[0].Privat_key);
+
+    console.log('SCP senderPrivateKey - ' + this.senderPrivateKey + '*');
+
+    let splitSenser = this.senderPrivateKey.split('x' , 64);
+    console.log('SCP splitSenser - ' + splitSenser[1] + '*');
+  
+    truffle_connect.sendTransactionsPrivate(sender, splitSenser[1], receiver);
+  
+    db.setTransaction(sender, receiver, amount, message, date);
+
+    db.updateUserBalanseMinus(amount, sender)
+  });
+
   
   console.log('sendTransactions is OK')
 });
@@ -175,9 +215,10 @@ app.post('/postAddUser', (req, res) => {
 
   let adres_user = req.body.adres_user; // user
   let adres_servis = user.address; // web3
+  let privateKey = user.privateKey; // web3
   let pass = req.body.pass; // user
 
-  db.addUserDB(adres_user, adres_servis, pass);
+  db.addUserDB(adres_user, adres_servis, privateKey, pass);
   console.log("postAddUser OK");
 })
 

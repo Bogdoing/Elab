@@ -1,14 +1,38 @@
 <template>
     <div class="pa-5" id="v-text-field">
 
-        <p class="text-h2 pb-5">Replenish</p>
-        <v-divider></v-divider>
+        <span>
+            <v-switch
+                color="indigo-darken-3"
+                v-model="model_switch"
+                hide-details
+                inset
+                true-value='Withdraw'
+                false-value="Replenish"
+                :label="`Switch: ${model_switch.toString()}`"
+            ></v-switch>
+        </span> 
 
-        <p class="text-h5">{{ adress }}</p>
-        <v-divider></v-divider>
-        <p class="text-h5">to</p>
-        <v-divider></v-divider>
-        <p class="text-h5">{{ to_adress }}</p>
+        <div v-if="model_switch.toString() == 'Replenish'"> 
+            <p class="text-h2 pb-5">Replenish</p>
+            <v-divider></v-divider>
+            <p class="text-h5">{{ adress }}</p>
+            <v-divider></v-divider>
+            <p class="text-h5">to</p>
+            <v-divider></v-divider>
+            <p class="text-h5">{{ to_adress }}</p>
+        </div>
+
+        <div v-else> 
+            <p class="text-h2 pb-5">Withdraw</p>
+            <v-divider></v-divider>
+            <p class="text-h5">{{ to_adress }}</p>
+            <v-divider></v-divider>
+            <p class="text-h5">to</p>
+            <v-divider></v-divider>
+            <p class="text-h5">{{ adress }}</p>
+        </div>
+
 
         <v-text-field
             class="pt-5"
@@ -33,17 +57,36 @@ const store = useCounterStore()
 export default {
     data() {
         return {
+            api: '',
             to_amount: '',
 
             adress: store.getAdress,
             to_adress: store.getToAdress,
+
+            model_switch: 'Replenish',
+
+            adress_sender: '',
+            adress_resiver: '',
         }
         },
         methods: {
             sendToken(){
-                axios.post(store.getApi + '/sendCoin', {
-                    sender: this.adress,
-                    receiver: this.to_adress,
+                if (this.model_switch.toString() == "Replenish"){
+                    this.adress_sender = this.adress
+                    this.adress_resiver = this.to_adress
+                    this.api = '/sendCoin'
+                }
+                else{
+                    this.adress_sender = this.to_adress
+                    this.adress_resiver = this.adress
+                    this.api = '/sendCoinPrivat'
+                }
+                
+                console.log('store.getApi + this.api - ' + store.getApi + this.api)
+
+                axios.post(store.getApi + this.api, {
+                    sender: this.adress_sender,
+                    receiver: this.adress_resiver,
                     amount: this.to_amount,
                     message: "replenishment of the balance",
                 })
@@ -54,14 +97,14 @@ export default {
                 .catch(function (error) {
                     console.log(error);
                 });
-                this.sendTokenUpdateDB();
+                //this.sendTokenUpdateDB();
             },
             sendTokenUpdateDB(){
                 console.log('sendTokenUpdateDB');
                 axios.post(store.getApi + '/sendCoinUser', {
                     amount_user: store.balanse,
                     amount_acc: this.to_amount,
-                    adress: this.adress,
+                    adress: this.adress_sender,
                 })
                 .then((response) => {
                     console.log('Sending token');
