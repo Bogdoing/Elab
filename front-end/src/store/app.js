@@ -9,16 +9,6 @@ export const useCounterStore = defineStore('counter', {
     activ_adress: false,
     balanse_adress: 0,
     to_adress: '',
-    // messages: [
-    //   {
-    //       you: '',
-    //       to:  '',
-    //       type: '',
-    //       amount: '0 ETC',
-    //       message: `Тест`,
-    //       time: '10:42am', 
-    //       color: '#f00', 
-    //   },]
   }),
   getters: {
     getCount() {
