@@ -10,7 +10,7 @@
                         <v-card id="card" class="mt-0 mb-0" width="100%">
                             <template id="card-template" v-slot:title class="mx-auto mt-5">
                                 <p class="text-h2 pt-7 pb-7 pl-7 pr-7 mx-auto">
-                                    {{ balanse }} ETC
+                                    {{ balanse }} ETH
                                     <!-- <img src="../assets/ethereum64.png" style="transform: scale(1.0)" alt="ethereum64">                                     -->
                                 </p>
                                 <v-card-text> 
@@ -20,7 +20,7 @@
                                 </v-card-text>
                                 <v-divider></v-divider>
                                 <p class="text-h2 pt-7 pb-7 pl-7 pr-7 mx-auto">
-                                    {{ balanse_account }} ETC
+                                    {{ balanse_account }} ETH
                                     <!-- <img src="../assets/ethereum64.png" style="transform: scale(1.0)" alt="ethereum64"> -->
                                 </p>
                                 <v-card-text> 
@@ -71,10 +71,10 @@
                     <v-card id="card" class="mx-auto mt-0" height="100%" width="100%">
                         <template v-slot:title id="card-template">
                             <p class="text-h2 mt-5">
-                                <img src="../../assets/course64.png" style="transform: scale(1)" alt="course32">
-                                Курс
+                                <!-- <img src="../../assets/course64.png" style="transform: scale(1.0)" alt="course32"> -->
+                                Курс ETH
                             </p>
-                            <ul class="text-h4 mt-5" id="array-rendering">
+                            <ul class="text-h4 mt-5" id="array-rendering" style="font-weight: 100;">
                                 <li> {{ pruseETHusd }} </li>
                                 <li> {{ pruseETHrub }} </li>
                             </ul>
@@ -233,9 +233,9 @@ export default{
                 this.pruseETHusd = ''
                 this.pruseETHrub = ''
                 //console.log('response - ' + Object.keys(response.data.market_data.current_price)); //market_data.current_price
-                //console.log('response usd - ' + response.data.market_data.current_price.usd); 
+                console.log('response usd - ' + response.data.market_data.current_price.usd); 
                 this.pruseETHusd += 'USD - '  + response.data.market_data.current_price.usd;
-                //console.log('response rub - ' + response.data.market_data.current_price.rub);
+                console.log('response rub - ' + response.data.market_data.current_price.rub);
                 this.pruseETHrub += 'RUB - '  + response.data.market_data.current_price.rub;             
                 this.sendAlert()
             })

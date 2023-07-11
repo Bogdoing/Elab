@@ -4,7 +4,6 @@
 		<div id="v-text-field">
 			<v-text-field
 				v-model="to_adress"
-				:rules="rules"
 				label="Adress"
 				id="v-text-field"
 			></v-text-field>

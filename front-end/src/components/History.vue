@@ -17,7 +17,6 @@
                 :key="message.time_transition"
                 :dot-color="message.color"
                 size="x-small"
-                @click="test"
                 v-model="circle_history"
                 >
                 <div class="mb-4">
