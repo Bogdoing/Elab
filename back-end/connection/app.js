@@ -123,6 +123,15 @@ module.exports = {
   
     const nonce = await this.web3.eth.getTransactionCount(senderAddress, "latest");
 
+    console.log('////////////////////////////////');
+    console.log(senderAddress);
+    console.log(senderPrivateKey);
+    console.log(recepientAddress);
+    console.log(amount);
+    console.log('////////////////////////////////');
+
+    //senderPrivateKey = '18e023c40cb6a71071b301e884e4303237d106474346febbdd2d959dc7fd85cc'
+
     const transaction = {
       to: recepientAddress,
       value: this.web3.utils.toWei(amount, "ether"),

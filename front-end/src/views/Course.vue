@@ -69,7 +69,7 @@ export default {
 		setColorMessage(){
 		console.log('this.messagesTest.length - ' + this.messagesTest.length)
 		for (let i = 0; i < this.messagesTest.length; i++) {
-			if (this.messagesTest[i].message == 'replenishment of the balance') {
+			if (this.messagesTest[i].message == 'replenishment of the balance' || this.messagesTest[i].message == 'Withdrawal of funds') {
 				this.messagesTest[i].color = 'lime'
 				console.log(this.messagesTest[i].message + ' | ' + i)
 			}

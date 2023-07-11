@@ -67,6 +67,7 @@ export default {
 
             adress_sender: '',
             adress_resiver: '',
+            message_send: '',
         }
         },
         methods: {
@@ -75,11 +76,13 @@ export default {
                     this.adress_sender = this.adress
                     this.adress_resiver = this.to_adress
                     this.api = '/sendCoin'
+                    this.message_send = 'replenishment of the balance'
                 }
                 else{
                     this.adress_sender = this.to_adress
                     this.adress_resiver = this.adress
                     this.api = '/sendCoinPrivat'
+                    this.message_send = 'Withdrawal of funds'
                 }
                 
                 console.log('store.getApi + this.api - ' + store.getApi + this.api)
@@ -88,7 +91,7 @@ export default {
                     sender: this.adress_sender,
                     receiver: this.adress_resiver,
                     amount: this.to_amount,
-                    message: "replenishment of the balance",
+                    message: this.message_send,
                 })
                 .then((response) => {                    
                     console.log('Sending token');

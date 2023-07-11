@@ -264,12 +264,12 @@ module.exports = {
     console.log('getPrivatKey');
     await connection.query({
         sql: `select Privat_key from Users
-	              where Adres_user = ?`,
+	              where Adres_user = ? or Adres_servis = ?`,
         //sql: `select Privat_key from users u`,
                 
         timeout: 40000, // 40s
       },
-      [adress],
+      [adress, adress],
       function (error, results, fields) {
         if (error) console.log(error + 'getPrivatKey');
         else{

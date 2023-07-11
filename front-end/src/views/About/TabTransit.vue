@@ -86,7 +86,15 @@ export default{
 	},
 	sendToken(){
 		console.log('Sending token - ' + this.api + " | " + store.getApi);
-		axios.post(this.api + '/sendCoin', {
+
+		let url = '/'
+		if (this.adress_select == store.getToAdress) url = '/sendCoinPrivat'		
+		else url = '/sendCoin'
+
+		console.log(url)
+		console.log(this.api + url + " /**/ " + this.adress_select)
+
+		axios.post(this.api + url, {
 			sender: this.adress_select,
 			receiver: this.to_adress,
 			amount: this.to_amount,

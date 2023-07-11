@@ -24,6 +24,7 @@
 
                     <div class="font-weight-normal">
                         <strong v-if="message.message == 'replenishment of the balance'">Пополнение аккаунта {{message.amount}} </strong>  
+                        <strong v-else-if="message.message == 'Withdrawal of funds'">Вывод средств {{message.amount}} </strong>  
                         <strong v-else-if="message.you_adress == adress_you">Отправлено из кошелька {{message.amount}} </strong>  
                         <strong v-else-if="message.you_adress == adress_acc">Отправлено из аккаунта {{message.amount}} {{message.you_adress}}  </strong>
                         
