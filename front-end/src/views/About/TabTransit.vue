@@ -40,6 +40,18 @@
 			density="comfortable"
 		></v-select>
 	
+		<div id="selections">
+			<v-select class=" mr-5 ml-5 "
+				clearable
+				label="Select"
+				:items=test
+				variant="outlined"
+				density="comfortable"
+			></v-select>
+		</div>	
+
+
+		
 
     </div>
 </template>
@@ -54,6 +66,10 @@ const store = useCounterStore()
 export default{
 	data(){
 	return {
+		test: [
+			"asdasdasdsaasdasdasdsadaasdasdasdsadaasdasdasdsadada", 
+			'asdadsadaasdasdasdsadaasdasdasdsadaasdasdasdsadasdasd'
+		],
 		tab: null,
 		rules: [
 		value => {
@@ -115,5 +131,8 @@ export default{
 <style>
 	#container{
 		padding: 10px;
+	}
+	#selections{
+		display: block;
 	}
 </style>

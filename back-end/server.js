@@ -21,213 +21,201 @@ app.use('/', express.static('public_static'));
 db.start_con();
 
 app.get('/getAccounts', (req, res) => {
-  console.log("**** GET /getAccounts ****");
-  truffle_connect.start(function (answer) {
-    res.send(answer);
-  })
+	console.log("**** GET /getAccounts ****");
+	truffle_connect.start(function (answer) {
+		res.send(answer);
+	})
 });
 
 app.post('/getBalance', (req, res) => {
-  console.log("**** GET /getBalance ****");
-  console.log(req.body);
-  let currentAcount = req.body.account;
+	console.log("**** GET /getBalance ****");
+	console.log(req.body);
+	let currentAcount = req.body.account;
 
-  truffle_connect.refreshBalance(currentAcount, (answer) => {
-    let account_balance = answer;
-    truffle_connect.start(function(answer){
+	truffle_connect.refreshBalance(currentAcount, (answer) => {
+		let account_balance = answer;
+		truffle_connect.start(function(answer){
 
-      let all_accounts = answer;
-      response = [account_balance, all_accounts]
-      res.send(response);
-    });
-  });
+		let all_accounts = answer;
+		response = [account_balance, all_accounts]
+		res.send(response);
+		});
+	});
 });
 
 app.post('/sendCoinMeta', (req, res) => {
-  console.log("**** GET /sendCoin ****");
-  console.log(req.body);
+	console.log("**** GET /sendCoin ****");
+	console.log(req.body);
 
-  let amount = req.body.amount;
-  let sender = req.body.sender;
-  let receiver = req.body.receiver;
+	let amount = req.body.amount;
+	let sender = req.body.sender;
+	let receiver = req.body.receiver;
 
-  truffle_connect.sendCoin(amount, sender, receiver, (balance) => {
-    res.send(balance);
-  });
+	truffle_connect.sendCoin(amount, sender, receiver, (balance) => {
+		res.send(balance);
+	});
 });
 
 
 // get all balanse 
 app.get('/getAllBalanse', (req, res) => {
-  console.log("**** GET /getAllBalanse ****");
-  truffle_connect.getBalanseAccaunt();
-  // truffle_connect.getBalanseAccaunt(function (answer) {
-  //   res.send(answer);
-  // })
+	console.log("**** GET /getAllBalanse ****");
+	truffle_connect.getBalanseAccaunt();
+	// truffle_connect.getBalanseAccaunt(function (answer) {
+	//   res.send(answer);
+	// })
 });
 
 app.post('/getTransactions', (req, res) => {
-  console.log("**** GET /sendTransactions ****");
-  let account = req.body.account;
-  let toAdress = req.body.toAdress;
+	console.log("**** GET /sendTransactions ****");
+	let account = req.body.account;
+	let toAdress = req.body.toAdress;
 
-  truffle_connect.sendTransactions(account, toAdress);
+	truffle_connect.sendTransactions(account, toAdress);
 });
 
 app.get('/getTestSol', function(req, res) {
-  console.log("**** GET /getTestSol ****");
-  console.log("req - * " + req.query.account);
-  //onsole.log("res - " + res);
-  db.getHistoryUser(req.query.account, function (history) {
-    res.send(history);
-  })
+	console.log("**** GET /getTestSol ****");
+	console.log("req - * " + req.query.account);
+	//onsole.log("res - " + res);
+	db.getHistoryUser(req.query.account, function (history) {
+		res.send(history);
+	})
 });
 
 // get all balanse 
 app.get('/getBalanseAdress', (req, res) => {
-  //console.log("**** GET /getBalanseAdress **** - " + Object.keys(req));
-  //console.log("originalUrl******** - " + req.originalUrl);
-  //console.log("params******** - " + req.query.account); 
+	//console.log("**** GET /getBalanseAdress **** - " + Object.keys(req));
+	//console.log("originalUrl******** - " + req.originalUrl);
+	//console.log("params******** - " + req.query.account); 
 
-  console.log("**** GET /getBalanseAdress ****");
-  console.log("req - * " + req.query.adress);
-  truffle_connect.getBalanceAdress(req.query.adress, function (balance) {
-      res.send(balance);
-  })
+	console.log("**** GET /getBalanseAdress ****");
+	console.log("req - * " + req.query.adress);
+	truffle_connect.getBalanceAdress(req.query.adress, function (balance) {
+		res.send(balance);
+	})
 });
 
 app.post('/sendCoin', (req, res) => {
-  console.log("**** GET /sendCoin ****");
-  console.log(req.body);
-  var date = new Date();
-  console.log(date);
-  let amount = req.body.amount;
-  let sender = req.body.sender;
-  let receiver = req.body.receiver;
-  let message = req.body.message;
-  // console.log(amount);
-  // console.log(sender);
-  // console.log(receiver);
-  // console.log(message);
-  // console.log(date);
+	console.log("**** GET /sendCoin ****");
+	console.log(req.body);
+	var date = new Date();
+	console.log(date);
+	let amount = req.body.amount;
+	let sender = req.body.sender;
+	let receiver = req.body.receiver;
+	let message = req.body.message;
+	// console.log(amount);
+	// console.log(sender);
+	// console.log(receiver);
+	// console.log(message);
+	// console.log(date);
 
-  truffle_connect.sendTransactions(amount, sender, receiver);
-  db.setTransaction(sender, receiver, amount, message, date);
-  console.log('sendTransactions is OK')
+	truffle_connect.sendTransactions(amount, sender, receiver);
+	db.setTransaction(sender, receiver, amount, message, date);
+	console.log('sendTransactions is OK')
 });
 
 app.post('/sendCoinPrivat', async (req, res) => {
-  console.log("**** GET /sendCoinPrivat ****");
-  console.log(req.body);
+	console.log("**** GET /sendCoinPrivat ****");
+	console.log(req.body);
 
-  var date = new Date();
-  console.log(date);
+	var date = new Date();
+	console.log(date);
 
-  let amount = req.body.amount;
-  let sender = req.body.sender;
-  let receiver = req.body.receiver;
-  let message = req.body.message;
+	let amount = req.body.amount;
+	let sender = req.body.sender;
+	let receiver = req.body.receiver;
+	let message = req.body.message;
 
-  console.log('sender - ' + sender);
-  console.log('receiver - ' + receiver);
-  console.log('amount - ' + amount);
+	console.log('sender - ' + sender);
+	console.log('receiver - ' + receiver);
+	console.log('amount - ' + amount);
 
-  await db.getPrivatKey(sender, function (key) { 
-    let senderPrivateKey = ''
-    senderPrivateKey = key[0].Privat_key;
-    console.log('key - ' + key[0].Privat_key);
+	await db.getPrivatKey(sender, function (key) { 
+		let senderPrivateKey = ''
+		senderPrivateKey = key[0].Privat_key;
+		console.log('key - ' + key[0].Privat_key);
 
-    console.log('SCP senderPrivateKey - ' + senderPrivateKey + '*');
+		console.log('SCP senderPrivateKey - ' + senderPrivateKey + '*');
 
-    let splitSenser = senderPrivateKey.split('x' , 64);
-    console.log('SCP splitSenser - ' + splitSenser[1] + '*');
-  
-    truffle_connect.sendTransactionsPrivate(sender, splitSenser[1], receiver, amount);
-  
-    db.setTransaction(sender, receiver, amount, message, date);
-    //db.updateUserBalanseMinus(amount, sender)
-  });
+		let splitSenser = senderPrivateKey.split('x' , 64);
+		console.log('SCP splitSenser - ' + splitSenser[1] + '*');
+	
+		truffle_connect.sendTransactionsPrivate(sender, splitSenser[1], receiver, amount);
+	
+		db.setTransaction(sender, receiver, amount, message, date);
+		//db.updateUserBalanseMinus(amount, sender)
+	});
 
-  
-  console.log('sendTransactions is OK')
+	
+	console.log('sendTransactions is OK')
 });
 
 app.post('/sendCoinUser', (req, res) => {
-  console.log("**** GET /sendCoinUser ****");
+	console.log("**** GET /sendCoinUser ****");
 
-  let amount_user = req.body.amount_user;
-  let amount_acc = req.body.amount_acc;
-  let adress = req.body.adress;
+	let amount_user = req.body.amount_user;
+	let amount_acc = req.body.amount_acc;
+	let adress = req.body.adress;
 
-  // console.log("SCU amount_user - " + amount_user);
-  // console.log('SCU amount_acc - ' + amount_acc);
-  // console.log('SCU adress - ' + adress);
+	// console.log("SCU amount_user - " + amount_user);
+	// console.log('SCU amount_acc - ' + amount_acc);
+	// console.log('SCU adress - ' + adress);
 
-  //db.updateUserBalanse(amount_acc, adress);
+	//db.updateUserBalanse(amount_acc, adress);
 });
 //
 
 /*  DB  */
 app.get("/getMysqlStatus", (req, res) => {
-
-  truffle_db.testConn(res);
-  
+  	truffle_db.testConn(res);
 });
 
 app.get('/getUserAccount', (req, res) => {
-  console.log("**** GET /getUserAccount ****");
-  console.log('req.body - ' + req.query.adress);
-  console.log('Object req - ' + Object.keys(req.query));
-  db.getUserAccount(req.query.adress, req.query.password , function (account) { //'0x58159043703749e032687f7e51c5a218ffaba410'
-    res.send(account);
-  });
-  console.log("getUserAccount OK");
+	console.log("**** GET /getUserAccount ****");
+	console.log('req.body - ' + req.query.adress);
+	console.log('Object req - ' + Object.keys(req.query));
+	db.getUserAccount(req.query.adress, req.query.password , function (account) { //'0x58159043703749e032687f7e51c5a218ffaba410'
+		res.send(account);
+	});
+	console.log("getUserAccount OK");
 })
 
 app.post('/postAddUser', (req, res) => {
-  console.log("**** GET /postAddUser ****");
-//   {
-//   address: '0x6aF412aD3674ac42d422A76931c989Dea2c68da0',
-//   privateKey: '0xb3739d5231655c8c20bf80c790f95262d99500c1f9d198ec1a2557b821e22a6b',
-//   signTransaction: [Function: signTransaction],
-//   sign: [Function: sign],
-//   encrypt: [Function: encrypt]
-// }
-// [ 'address', 'privateKey', 'signTransaction', 'sign', 'encrypt' ]  
-  let user = truffle_connect.createUser();
-  console.log(user);
+	console.log("**** GET /postAddUser ****");
+	let user = truffle_connect.createUser();
+	console.log(user);
 
-  let adres_user = req.body.adres_user; // user
-  let adres_servis = user.address; // web3
-  let privateKey = user.privateKey; // web3
-  let pass = req.body.pass; // user
+	let adres_user = req.body.adres_user; // user
+	let adres_servis = user.address; // web3
+	let privateKey = user.privateKey; // web3
+	let pass = req.body.pass; // user
 
-  db.addUserDB(adres_user, adres_servis, privateKey, pass);
-  console.log("postAddUser OK");
+	db.addUserDB(adres_user, adres_servis, privateKey, pass);
+	console.log("postAddUser OK");
 })
 
 app.get('/getReDB', (req, res) => {
-  console.log("**** GET /getReDB ****");
+	console.log("**** GET /getReDB ****");
 
-  db.dropDB();
+	db.dropDB();
 
-  db.createDBUsers();
+	db.createDBUsers();
 });
+
 app.get('/getReDBtransaction', (req, res) => {
-  console.log("**** GET /getReDBtransaction ****");
+	console.log("**** GET /getReDBtransaction ****");
 
-  db.dropDBtransaction();
+	db.dropDBtransaction();
 
-  db.createDBtransaction();
+	db.createDBtransaction();
 });
 /* /DB/ */
 //
 
 app.listen(port, () => {
-
-  // fallback - use your fallback strategy (local node / hosted node + in-dapp id mgmt / fail)
-  truffle_connect.web3 = new Web3(new Web3.providers.HttpProvider("http://127.0.0.1:9545"));
-
-  console.log("Express Listening at http://localhost:" + port);
-
+	// fallback - use your fallback strategy (local node / hosted node + in-dapp id mgmt / fail)
+	truffle_connect.web3 = new Web3(new Web3.providers.HttpProvider("http://127.0.0.1:9545"));
+	console.log("Express Listening at http://localhost:" + port);
 });
