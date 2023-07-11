@@ -1,4 +1,5 @@
 const express = require('express');
+const https = require('https')
 const cors = require('cors')
 const app = express();
 // enabling CORS for any unknown origin(https://xyz.example.com)
@@ -223,6 +224,37 @@ app.get('/getReDBtransaction', (req, res) => {
 	db.createDBtransaction();
 });
 /* /DB/ */
+
+/// get prise GAS (in GWEI) from transaction
+app.get("/getPriseGas", function(req, res) {
+	// let adres_user = req.body.adres_user; // user
+	// let adres_servis = user.address; // web3
+	// let privateKey = user.privateKey; // web3
+	// let pass = req.body.pass; // user
+
+	// get prise valet
+	const options = {
+		hostname: 'https://api.coingecko.com',
+		//port: 443,
+		path: '/api/v3/coins/ethereum?tickers=true&market_data=true',
+		method: 'GET'
+	  }
+	  const result = https.request(options, (res) => {
+		console.log(`statusCode: ${res.statusCode}`)
+		res.on('data', (d) => {
+		  process.stdout.write(d)
+		})
+	  })
+	  result.on('error', (error) => {
+		console.error(error)
+	  })
+	  result.end()
+	//
+
+
+
+	//truffle_connect.getGweiLimit(gasPrise, transaction)
+}); 
 
 ///  start application
 app.listen(port, () => {

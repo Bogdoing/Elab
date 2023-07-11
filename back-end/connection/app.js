@@ -95,14 +95,13 @@ module.exports = {
 	sendTransactions: async function (amount, account, toAdress) {
 		MetaCoin.setProvider(this.web3.currentProvider);
 		try {
-			// console.log("sendTransactions");
-			// console.log("ST account  - |" + account  + "|");
-			// console.log("ST toAdress - |" + toAdress + "|");
-			console.log("ST amount - " + amount + " * amountx8 - " + amount*1000000000000000000);
+			console.log('account - ' 		+ account + 
+						' * ST amount - ' 	+ amount + 
+						' * amountx8 - ' 	+ amount * 1000000000000000000);
 			this.web3.eth.sendTransaction({
 				from: account,
 				to: toAdress,
-				value: amount*1000000000000000000
+				value: amount * 1000000000000000000
 			});
 
 			// this.web3.eth.sendTransaction({from: '0x591D0c8600aCc0F7e9907ED1cd7b8e69d1fF4739', to: '0x85289B9eE778051188EFc2a39Ac900612d100a26', value: 1000000000000000000});
@@ -111,7 +110,7 @@ module.exports = {
 
 			console.log("appjs sendTransactions is OK");
 		} catch (error) {
-			console.log("sendTransactions EROR - " + error.message);
+			console.log("appjs sendTransactions EROR - " + error.message);
 		}
 	},
 
@@ -134,6 +133,8 @@ module.exports = {
 			gas: 30000,
 			nonce: nonce,
 		};
+
+		this.getGweiLimit(1870.87, transaction)
 
 		const signedTransaction = await this.web3.eth.accounts.signTransaction(
 			transaction,
@@ -169,6 +170,28 @@ module.exports = {
 				callback(result)
 			}
 		})
+	},
+
+	getGweiLimit: async function (gasPrise, transaction){
+		console.log('//////////////////////');
+		let result = {
+			gasGet : 0,
+			gasLimit : '',
+			gasPrise: gasPrise,
+			transactionFee: '',
+		}
+
+		result.gasLimit = await this.web3.eth.estimateGas(transaction)
+			.then((res) => result.gasGet = res); // console.log('res - ' + res)
+		console.log('gasGet - ' + result.gasGet);
+		console.log('gasLimit - ' + result.gasLimit);
+		console.log('gasPrise - ' + result.gasPrise);
+		result.transactionFee = result.gasPrise * result.gasLimit / 1000000000;
+		console.log('gasPrise * gasLimit - ' + result.gasPrise * result.gasLimit);
+		console.log('transactionFee usd - ' + result.transactionFee);
+		console.log('transactionFee rub - ' + result.transactionFee * 91.49);
+		
+		console.log('//////////////////////');
 	},
 
   	createUser: function(){
