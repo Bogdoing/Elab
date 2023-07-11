@@ -1,5 +1,5 @@
 const express = require('express');
-const https = require('https')
+const axios = require('axios')
 const cors = require('cors')
 const app = express();
 // enabling CORS for any unknown origin(https://xyz.example.com)
@@ -233,22 +233,22 @@ app.get("/getPriseGas", function(req, res) {
 	// let pass = req.body.pass; // user
 
 	// get prise valet
-	const options = {
-		hostname: 'https://api.coingecko.com',
-		//port: 443,
-		path: '/api/v3/coins/ethereum?tickers=true&market_data=true',
-		method: 'GET'
-	  }
-	  const result = https.request(options, (res) => {
-		console.log(`statusCode: ${res.statusCode}`)
-		res.on('data', (d) => {
-		  process.stdout.write(d)
-		})
-	  })
-	  result.on('error', (error) => {
-		console.error(error)
-	  })
-	  result.end()
+	console.log("getPriseGas")
+	const getBreeds = async () => {
+		try {
+			return await axios.get('https://api.coingecko.com/api/v3/coins/ethereum?tickers=true&market_data=true') //('https://dog.ceo/api/breeds/list/all')
+		} catch (error) {
+			console.error(error)
+		}
+	}
+	const countBreeds = async () => {
+		const response = await getBreeds()
+		console.log('response - ' +  response.data.market_data.current_price.usd)
+		console.log('response - OK')
+
+	}
+	countBreeds()
+	console.log("getPriseGas")
 	//
 
 
