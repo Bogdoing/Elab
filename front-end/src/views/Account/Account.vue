@@ -45,7 +45,7 @@
             <v-col>
                 <v-sheet class="bg-deep-purple accent-4 pa-2 ma-4 rounded-lg " height="100%">       
                     <div class="d-flex justify-center mb-5 mt-5">
-                        <v-btn variant="outlined" @click="logIN"> TEST </v-btn>
+                        <v-btn variant="outlined" @click="test"> TEST </v-btn>
                     </div>              
                     <div class="d-flex justify-center mb-5 mt-5">
                         <v-btn variant="outlined" @click="clearLocalStorage"> Exit </v-btn>
@@ -169,7 +169,7 @@ export default{
 
         adress: store.getAdress,
         adress_service: '',
-
+        adress_account: '',
         password: '',
 
         drawer: true,
@@ -187,7 +187,8 @@ export default{
     },
     created() {
         if (this.reg == true) {
-            this.getBalanse();
+            //this.getBalanse();
+            //this.getBalanseServis(this.address);
             this.getPriceETC();
             this.getAccount();
         }
@@ -195,15 +196,21 @@ export default{
     },
     mounted() {
         this.getLocalStorage();
+        
         if (this.reg == true) {
-            this.getBalanse();
+            //this.getBalanse();
             this.getPriceETC();
             this.getAccount();
         }
         else {}
         this.logIN();
+
     },
     methods: {
+        test(){
+            console.log("ADRESS ACCOUNT ++ " + this.adress_account);
+            this.getBalanseServis(this.adress_account);
+        },
         updateStore(){
             store.adress = this.adress;
             store.balanse = this.balanse_account;
@@ -243,7 +250,7 @@ export default{
             this.alertAccount = 'alertAccount'
             this.alert_account = true;
         },
-        getBalanse(){
+        getBalanse(){  
         console.log('Getting balanse - ' + this.adress);
         axios.get(this.api + '/getBalanseAdress', {
             params: {
@@ -256,6 +263,25 @@ export default{
         .then((response) => {
             console.log('response - ' + response.data);
             this.balanse = (response.data / 1000000000000000000).toFixed(2);
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+        },
+
+        getBalanseServis(adres){  // - add gat balanse adress_account
+        console.log('Getting balanse - ' + adres);
+        axios.get(this.api + '/getBalanseAdress', {
+            params: {
+                adress: adres
+            },
+            data: {
+                adress: adres
+            }
+        })
+        .then((response) => {
+            console.log('response - ' + response.data);
+            this.balanse_account = (response.data / 1000000000000000000).toFixed(2);
         })
         .catch(function (error) {
             console.log(error);
@@ -337,6 +363,7 @@ export default{
                 this.updateStore();
 
                 this.getBalanse();
+                this.getBalanseServis(this.adress_account);
                 this.getPriceETC();
 
                 this.saveLocalStorage();

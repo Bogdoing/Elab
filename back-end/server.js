@@ -146,6 +146,7 @@ app.post('/sendCoinPrivat', async (req, res) => {
 
   console.log(sender);
   console.log(receiver);
+  console.log('amount - ' + amount);
 
   let senderPrivateKey = ''
   await db.getPrivatKey(receiver, function (key) { 
@@ -157,11 +158,12 @@ app.post('/sendCoinPrivat', async (req, res) => {
     let splitSenser = this.senderPrivateKey.split('x' , 64);
     console.log('SCP splitSenser - ' + splitSenser[1] + '*');
   
-    truffle_connect.sendTransactionsPrivate(sender, splitSenser[1], receiver);
+    truffle_connect.sendTransactionsPrivate(sender, splitSenser[1], receiver, amount);
   
     db.setTransaction(sender, receiver, amount, message, date);
 
-    db.updateUserBalanseMinus(amount, sender)
+    
+    //db.updateUserBalanseMinus(amount, sender)
   });
 
   
@@ -179,7 +181,7 @@ app.post('/sendCoinUser', (req, res) => {
   // console.log('SCU amount_acc - ' + amount_acc);
   // console.log('SCU adress - ' + adress);
 
-  db.updateUserBalanse(amount_acc, adress);
+  //db.updateUserBalanse(amount_acc, adress);
 });
 //
 

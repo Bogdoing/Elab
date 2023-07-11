@@ -117,15 +117,15 @@ module.exports = {
     }
   },
 
-  sendTransactionsPrivate: async function (senderAddress, senderPrivateKey, recepientAddress){
+  sendTransactionsPrivate: async function (senderAddress, senderPrivateKey, recepientAddress, amount){
 
-    console.log("Sending 1 ether from address:", senderAddress, "to address:", recepientAddress);
+    console.log("Sending 1 ether from address: " + senderAddress + " to address: " + recepientAddress + " amount: ", amount);
   
     const nonce = await this.web3.eth.getTransactionCount(senderAddress, "latest");
 
     const transaction = {
       to: recepientAddress,
-      value: this.web3.utils.toWei("1", "ether"),
+      value: this.web3.utils.toWei(amount, "ether"),
       gas: 30000,
       nonce: nonce,
     };
