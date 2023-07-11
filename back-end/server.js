@@ -5,11 +5,12 @@ const app = express();
 app.use(cors());
 const port = 3001 || process.env.PORT;
 const Web3 = require('web3');
+
 const truffle_connect = require('./connection/app.js');
 const truffle_infrast = require('./connection/infrast.js');
 const db = require('./db/connectionDB.js');
-const bodyParser = require('body-parser');
 
+const bodyParser = require('body-parser');
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }));
 
@@ -20,6 +21,7 @@ app.use('/', express.static('public_static'));
 
 db.start_con();
 
+/// Sol get all acount blockein
 app.get('/getAccounts', (req, res) => {
 	console.log("**** GET /getAccounts ****");
 	truffle_connect.start(function (answer) {
@@ -27,6 +29,7 @@ app.get('/getAccounts', (req, res) => {
 	})
 });
 
+/// Sol Update blanse current user adress
 app.post('/getBalance', (req, res) => {
 	console.log("**** GET /getBalance ****");
 	console.log(req.body);
@@ -43,6 +46,7 @@ app.post('/getBalance', (req, res) => {
 	});
 });
 
+/// Sol send coin Meta
 app.post('/sendCoinMeta', (req, res) => {
 	console.log("**** GET /sendCoin ****");
 	console.log(req.body);
@@ -57,7 +61,7 @@ app.post('/sendCoinMeta', (req, res) => {
 });
 
 
-// get all balanse 
+/// get all balanse 
 app.get('/getAllBalanse', (req, res) => {
 	console.log("**** GET /getAllBalanse ****");
 	truffle_connect.getBalanseAccaunt();
@@ -66,6 +70,7 @@ app.get('/getAllBalanse', (req, res) => {
 	// })
 });
 
+/// send transition 
 app.post('/getTransactions', (req, res) => {
 	console.log("**** GET /sendTransactions ****");
 	let account = req.body.account;
@@ -74,6 +79,7 @@ app.post('/getTransactions', (req, res) => {
 	truffle_connect.sendTransactions(account, toAdress);
 });
 
+/// get list all History current user from DB
 app.get('/getTestSol', function(req, res) {
 	console.log("**** GET /getTestSol ****");
 	console.log("req - * " + req.query.account);
@@ -83,12 +89,8 @@ app.get('/getTestSol', function(req, res) {
 	})
 });
 
-// get all balanse 
+/// get balanse current user (adress user)
 app.get('/getBalanseAdress', (req, res) => {
-	//console.log("**** GET /getBalanseAdress **** - " + Object.keys(req));
-	//console.log("originalUrl******** - " + req.originalUrl);
-	//console.log("params******** - " + req.query.account); 
-
 	console.log("**** GET /getBalanseAdress ****");
 	console.log("req - * " + req.query.adress);
 	truffle_connect.getBalanceAdress(req.query.adress, function (balance) {
@@ -96,6 +98,7 @@ app.get('/getBalanseAdress', (req, res) => {
 	})
 });
 
+/// transaction originating from a wallet created in truffle
 app.post('/sendCoin', (req, res) => {
 	console.log("**** GET /sendCoin ****");
 	console.log(req.body);
@@ -116,6 +119,8 @@ app.post('/sendCoin', (req, res) => {
 	console.log('sendTransactions is OK')
 });
 
+/// transaction originating from a wallet created not in truffle 
+/// and using a private key
 app.post('/sendCoinPrivat', async (req, res) => {
 	console.log("**** GET /sendCoinPrivat ****");
 	console.log(req.body);
@@ -152,6 +157,7 @@ app.post('/sendCoinPrivat', async (req, res) => {
 	console.log('sendTransactions is OK')
 });
 
+/// set info about the transaction from DB
 app.post('/sendCoinUser', (req, res) => {
 	console.log("**** GET /sendCoinUser ****");
 
@@ -168,10 +174,12 @@ app.post('/sendCoinUser', (req, res) => {
 //
 
 /*  DB  */
+/// test connection DB
 app.get("/getMysqlStatus", (req, res) => {
   	truffle_db.testConn(res);
 });
 
+/// current user authentication via DB
 app.get('/getUserAccount', (req, res) => {
 	console.log("**** GET /getUserAccount ****");
 	console.log('req.body - ' + req.query.adress);
@@ -182,6 +190,7 @@ app.get('/getUserAccount', (req, res) => {
 	console.log("getUserAccount OK");
 })
 
+/// add new user account
 app.post('/postAddUser', (req, res) => {
 	console.log("**** GET /postAddUser ****");
 	let user = truffle_connect.createUser();
@@ -196,6 +205,7 @@ app.post('/postAddUser', (req, res) => {
 	console.log("postAddUser OK");
 })
 
+/// overwriting the table Users
 app.get('/getReDB', (req, res) => {
 	console.log("**** GET /getReDB ****");
 
@@ -204,6 +214,7 @@ app.get('/getReDB', (req, res) => {
 	db.createDBUsers();
 });
 
+/// overwriting the table transition
 app.get('/getReDBtransaction', (req, res) => {
 	console.log("**** GET /getReDBtransaction ****");
 
@@ -212,8 +223,8 @@ app.get('/getReDBtransaction', (req, res) => {
 	db.createDBtransaction();
 });
 /* /DB/ */
-//
 
+///  start application
 app.listen(port, () => {
 	// fallback - use your fallback strategy (local node / hosted node + in-dapp id mgmt / fail)
 	truffle_connect.web3 = new Web3(new Web3.providers.HttpProvider("http://127.0.0.1:9545"));
